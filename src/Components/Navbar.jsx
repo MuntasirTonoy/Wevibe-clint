@@ -49,8 +49,8 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-      <div>
-        <button className="btn bg-teal-700 text-white ">
+      <div className="hidden">
+        <button className="btn bg-teal-600 text-white ">
           {" "}
           Login <FiLogIn />
         </button>
