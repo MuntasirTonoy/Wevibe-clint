@@ -5,7 +5,7 @@ import { FiLogIn } from "react-icons/fi";
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-base-100 s px-5 lg:px-10 ">
+    <div className="navbar fixed z-50 bg-base-100 s px-5 lg:px-10 ">
       <div className="flex-1 ">
         <div className="flex justify-start items-center">
           <img src={logo} alt="site-logo" className="w-8" />

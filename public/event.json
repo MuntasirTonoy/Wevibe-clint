@@ -6,7 +6,8 @@
     "imageUrl": "https://example.com/images/tech-conference.jpg",
     "eventType": "conference",
     "location": "San Francisco Convention Center",
-    "date": "2023-11-15"
+    "date": "2023-11-15",
+    "joined": 750
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@
     "imageUrl": "https://example.com/images/jazz-night.jpg",
     "eventType": "concert",
     "location": "Central Park, New York",
-    "date": "2023-08-20"
+    "date": "2023-08-20",
+    "joined": 2500
   },
   {
     "id": 3,
@@ -24,7 +26,8 @@
     "imageUrl": "https://example.com/images/marathon.jpg",
     "eventType": "sports",
     "location": "Chicago Downtown",
-    "date": "2023-09-10"
+    "date": "2023-09-10",
+    "joined": 1200
   },
   {
     "id": 4,
@@ -33,7 +36,8 @@
     "imageUrl": "https://example.com/images/art-exhibition.jpg",
     "eventType": "exhibition",
     "location": "Tate Modern, London",
-    "date": "2023-10-05"
+    "date": "2023-10-05",
+    "joined": 600
   },
   {
     "id": 5,
@@ -42,7 +46,8 @@
     "imageUrl": "https://example.com/images/food-festival.jpg",
     "eventType": "festival",
     "location": "Pier 39, San Francisco",
-    "date": "2023-07-22"
+    "date": "2023-07-22",
+    "joined": 3500
   },
   {
     "id": 6,
@@ -51,7 +56,8 @@
     "imageUrl": "https://example.com/images/startup-pitch.jpg",
     "eventType": "competition",
     "location": "Station F, Paris",
-    "date": "2023-11-30"
+    "date": "2023-11-30",
+    "joined": 300
   },
   {
     "id": 7,
@@ -60,7 +66,8 @@
     "imageUrl": "https://example.com/images/yoga-retreat.jpg",
     "eventType": "retreat",
     "location": "Sedona, Arizona",
-    "date": "2023-09-15"
+    "date": "2023-09-15",
+    "joined": 150
   },
   {
     "id": 8,
@@ -69,7 +76,8 @@
     "imageUrl": "https://example.com/images/science-fair.jpg",
     "eventType": "educational",
     "location": "Museum of Science, Boston",
-    "date": "2023-10-21"
+    "date": "2023-10-21",
+    "joined": 450
   },
   {
     "id": 9,
@@ -78,7 +86,8 @@
     "imageUrl": "https://example.com/images/wine-tasting.jpg",
     "eventType": "tour",
     "location": "Napa Valley, California",
-    "date": "2023-08-12"
+    "date": "2023-08-12",
+    "joined": 200
   },
   {
     "id": 10,
@@ -87,6 +96,7 @@
     "imageUrl": "https://example.com/images/film-premiere.jpg",
     "eventType": "entertainment",
     "location": "TCL Chinese Theatre, Hollywood",
-    "date": "2023-12-01"
+    "date": "2023-12-01",
+    "joined": 800
   }
 ]
