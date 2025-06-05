@@ -11,10 +11,10 @@ const Feature = () => {
     <section className="py-16 md:py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold  mb-4">
             How CommunityServe Works
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg  max-w-3xl mx-auto">
             Our platform makes it easy to create, find, and join community
             service events that match your interests and availability.
           </p>
@@ -22,7 +22,7 @@ const Feature = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Feature 1 - Create Events */}
           <div className="bg-white p-8 rounded-lg shadow-md">
-            <div className="h-12 w-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center mb-5">
+            <div className="h-12 w-12 bg-indigo-100 text-teal-600 rounded-lg flex items-center justify-center mb-5">
               <FaCalendarAlt className="h-6 w-6" />
             </div>
             <h3 className="text-xl font-semibold mb-3 text-gray-900">
@@ -56,7 +56,7 @@ const Feature = () => {
 
           {/* Feature 2 - Discover Opportunities */}
           <div className="bg-white p-8 rounded-lg shadow-md">
-            <div className="h-12 w-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center mb-5">
+            <div className="h-12 w-12 bg-indigo-100 text-teal-600 rounded-lg flex items-center justify-center mb-5">
               <FaMapMarkerAlt className="h-6 w-6" />
             </div>
             <h3 className="text-xl font-semibold mb-3 text-gray-900">
@@ -90,7 +90,7 @@ const Feature = () => {
 
           {/* Feature 3 - Join & Participate */}
           <div className="bg-white p-8 rounded-lg shadow-md">
-            <div className="h-12 w-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center mb-5">
+            <div className="h-12 w-12 bg-indigo-100 text-teal-600 rounded-lg flex items-center justify-center mb-5">
               <FaUsers className="h-6 w-6" />
             </div>
             <h3 className="text-xl font-semibold mb-3 text-gray-900">

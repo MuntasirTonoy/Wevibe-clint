@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "title": "Tech Conference 2023",
+    "description": "Annual technology conference featuring the latest innovations in AI, blockchain, and cloud computing.",
+    "imageUrl": "https://example.com/images/tech-conference.jpg",
+    "eventType": "conference",
+    "location": "San Francisco Convention Center",
+    "date": "2023-11-15"
+  },
+  {
+    "id": 2,
+    "title": "Jazz Night Under the Stars",
+    "description": "An evening of smooth jazz performances by renowned artists in an open-air amphitheater.",
+    "imageUrl": "https://example.com/images/jazz-night.jpg",
+    "eventType": "concert",
+    "location": "Central Park, New York",
+    "date": "2023-08-20"
+  },
+  {
+    "id": 3,
+    "title": "Marathon for Charity",
+    "description": "Annual city marathon raising funds for children's hospitals. All fitness levels welcome!",
+    "imageUrl": "https://example.com/images/marathon.jpg",
+    "eventType": "sports",
+    "location": "Chicago Downtown",
+    "date": "2023-09-10"
+  },
+  {
+    "id": 4,
+    "title": "Art Exhibition: Modern Perspectives",
+    "description": "Showcasing contemporary artworks from emerging artists around the world.",
+    "imageUrl": "https://example.com/images/art-exhibition.jpg",
+    "eventType": "exhibition",
+    "location": "Tate Modern, London",
+    "date": "2023-10-05"
+  },
+  {
+    "id": 5,
+    "title": "Food Festival",
+    "description": "A culinary extravaganza featuring dishes from 50 different countries and live cooking demonstrations.",
+    "imageUrl": "https://example.com/images/food-festival.jpg",
+    "eventType": "festival",
+    "location": "Pier 39, San Francisco",
+    "date": "2023-07-22"
+  },
+  {
+    "id": 6,
+    "title": "Startup Pitch Competition",
+    "description": "Early-stage startups compete for funding and mentorship from top VCs.",
+    "imageUrl": "https://example.com/images/startup-pitch.jpg",
+    "eventType": "competition",
+    "location": "Station F, Paris",
+    "date": "2023-11-30"
+  },
+  {
+    "id": 7,
+    "title": "Yoga Retreat Weekend",
+    "description": "A rejuvenating weekend of yoga, meditation, and wellness workshops in a peaceful mountain setting.",
+    "imageUrl": "https://example.com/images/yoga-retreat.jpg",
+    "eventType": "retreat",
+    "location": "Sedona, Arizona",
+    "date": "2023-09-15"
+  },
+  {
+    "id": 8,
+    "title": "Science Fair for Kids",
+    "description": "Interactive science exhibits and experiments designed for children ages 6-12.",
+    "imageUrl": "https://example.com/images/science-fair.jpg",
+    "eventType": "educational",
+    "location": "Museum of Science, Boston",
+    "date": "2023-10-21"
+  },
+  {
+    "id": 9,
+    "title": "Wine Tasting Tour",
+    "description": "Guided tour through Napa Valley's finest vineyards with expert sommeliers.",
+    "imageUrl": "https://example.com/images/wine-tasting.jpg",
+    "eventType": "tour",
+    "location": "Napa Valley, California",
+    "date": "2023-08-12"
+  },
+  {
+    "id": 10,
+    "title": "Film Premiere: The Last Voyage",
+    "description": "World premiere of the highly anticipated sci-fi adventure film with cast in attendance.",
+    "imageUrl": "https://example.com/images/film-premiere.jpg",
+    "eventType": "entertainment",
+    "location": "TCL Chinese Theatre, Hollywood",
+    "date": "2023-12-01"
+  }
+]
