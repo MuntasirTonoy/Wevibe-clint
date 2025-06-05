@@ -5,7 +5,7 @@ import { FiLogIn } from "react-icons/fi";
 
 const Navbar = () => {
   return (
-    <div className="navbar fixed z-50 bg-base-100 s px-5 lg:px-10 ">
+    <div className="navbar sticky top-0 z-50 bg-base-100 s px-5 lg:px-10 ">
       <div className="flex-1 ">
         <div className="flex justify-start items-center">
           <img src={logo} alt="site-logo" className="w-8" />
@@ -14,7 +14,7 @@ const Navbar = () => {
       </div>
       <div className="flex gap-5 items-center">
         <div>
-          <button className=" ">Upcoming Evenets</button>
+          <button className=" hidden md:block">Upcoming Evenets</button>
         </div>
         <div>
           <label className="toggle text-base-content">
@@ -91,6 +91,9 @@ const Navbar = () => {
             </li>
             <li>
               <a>Joined Events</a>
+            </li>
+            <li>
+              <a>Upcoming Events</a>
             </li>
             <li>
               <a>Logout</a>
