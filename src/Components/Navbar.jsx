@@ -1,7 +1,11 @@
 import React from "react";
 import logo from "../assets/logo.png";
-import { BiLogIn } from "react-icons/bi";
 import { FiLogIn } from "react-icons/fi";
+import { NavLink } from "react-router";
+import { TfiMenuAlt } from "react-icons/tfi";
+import { MdOutlineLogout } from "react-icons/md";
+import { IoMdHeartEmpty } from "react-icons/io";
+import { HiOutlineCalendarDateRange } from "react-icons/hi2";
 
 const Navbar = () => {
   return (
@@ -14,7 +18,12 @@ const Navbar = () => {
       </div>
       <div className="flex gap-5 items-center">
         <div>
-          <button className=" hidden md:block">Upcoming Evenets</button>
+          <NavLink
+            to="/upcoming-events"
+            className=" hidden md:block  bg-teal-300/20 px-4 py-2 rounded-3xl hover:cursor-pointer"
+          >
+            Upcoming Evenets
+          </NavLink>
         </div>
         <div>
           <label className="toggle text-base-content">
@@ -87,16 +96,29 @@ const Navbar = () => {
             </li>
             <hr className="mb-1 border-1 border-gray-300" />
             <li>
-              <a>Manage Events</a>
+              <NavLink to="/manage-events">
+                {" "}
+                <TfiMenuAlt />
+                Manage Events
+              </NavLink>
             </li>
             <li>
-              <a>Joined Events</a>
+              <NavLink to="/Joined-events">
+                <IoMdHeartEmpty />
+                Joined Events
+              </NavLink>
+            </li>
+            <li className="lg:hidden">
+              <a>
+                {" "}
+                <HiOutlineCalendarDateRange /> Upcoming Events
+              </a>
             </li>
             <li>
-              <a>Upcoming Events</a>
-            </li>
-            <li>
-              <a>Logout</a>
+              <a>
+                {" "}
+                <MdOutlineLogout /> Logout
+              </a>
             </li>
           </ul>
         </div>

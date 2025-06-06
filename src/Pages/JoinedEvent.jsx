@@ -9,8 +9,11 @@ import {
 } from "react-icons/pi";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router";
+import { MdOutlineDelete } from "react-icons/md";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { TbListDetails } from "react-icons/tb";
 
-const ManageEvents = () => {
+const JoinedEvents = () => {
   // Sample event data for design purposes
   const userEvents = [
     {
@@ -42,13 +45,13 @@ const ManageEvents = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex justify-between flex-wrap items-center mb-8 gap-5">
           <h1 className="text-3xl font-bold text-gray-900">
-            Manage Your Events
+            Your Joined Events
           </h1>
-          <Link to="/create-event">
-            <button className="bg-teal-600 btn hover:bg-teal-700 text-white ">
-              <PiPlus className="inline mr-1" /> Create Event
-            </button>
-          </Link>
+
+          <button className="bg-red-600 btn hover:bg-red-700 text-white ">
+            <FaRegTrashAlt />
+            Delete All
+          </button>
         </div>
         {userEvents.length > 0 ? (
           <div className="space-y-6">
@@ -89,16 +92,11 @@ const ManageEvents = () => {
                   </div>
                 </div>
                 <div className="p-6 flex flex-row md:flex-col items-center justify-center space-x-4 md:space-x-0 md:space-y-4 border-t md:border-t-0 md:border-l border-gray-200">
-                  <Link to={`/event/${event.id}`}>
+                  <Link to="/event-details">
                     <button className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md flex items-center transition-colors w-full">
-                      <PiPencil className="h-4 w-4 mr-2" />
-                      Edit
+                      <TbListDetails className="mr-2" /> View Details
                     </button>
                   </Link>
-                  <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md flex items-center transition-colors w-full">
-                    <PiTrash className="h-4 w-4 mr-2" />
-                    Delete
-                  </button>
                 </div>
               </div>
             ))}
@@ -125,4 +123,4 @@ const ManageEvents = () => {
   );
 };
 
-export default ManageEvents;
+export default JoinedEvents;

@@ -2,6 +2,9 @@ import { createBrowserRouter } from "react-router";
 import Home from "../Pages/Home";
 import Root from "../Root";
 import ManageEvents from "../Pages/ManageEvents";
+import JoinedEvents from "../Pages/JoinedEvent";
+import EventDetails from "../Pages/EventDetails";
+import UpcomingEvents from "../Pages/Upcomingevents";
 
 const Routes = createBrowserRouter([
   {
@@ -13,13 +16,22 @@ const Routes = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-      {
-        path: "/upcoming-events",
-        element: <h1>im umcomoing</h1>,
-      },
+
       {
         path: "manage-events",
         element: <ManageEvents />,
+      },
+      {
+        path: "joined-events",
+        element: <JoinedEvents />,
+      },
+      {
+        path: "event-details",
+        element: <EventDetails />,
+      },
+      {
+        path: "upcoming-events",
+        element: <UpcomingEvents />,
       },
     ],
   },
