@@ -5,6 +5,8 @@ import ManageEvents from "../Pages/ManageEvents";
 import JoinedEvents from "../Pages/JoinedEvent";
 import EventDetails from "../Pages/EventDetails";
 import UpcomingEvents from "../Pages/Upcomingevents";
+import Login from "../Pages/Login";
+import Register from "../Pages/Register";
 
 const Routes = createBrowserRouter([
   {
@@ -37,7 +39,11 @@ const Routes = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <h1> im login</h1>,
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
 export default Routes;

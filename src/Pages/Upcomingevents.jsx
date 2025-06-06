@@ -4,6 +4,7 @@ import EventCard from "../Components/EventCard";
 import animationData from "../assets/not-found.json";
 import loadingData from "../assets/loading.json";
 import Lottie from "lottie-react";
+import Loading from "../Components/Loading";
 
 const UpcomingEvents = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,7 +48,7 @@ const UpcomingEvents = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <Lottie animationData={loadingData} loop={true} autoplay={true} />
+        <Loading />
       </div>
     );
   }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const Hero = () => {
   return (
@@ -18,7 +19,9 @@ const Hero = () => {
             local area..
           </p>
           <div className="flex gap-2 lg:flex-row flex-col justify-center lg:justify-start">
-            <button className="btn bg-teal-600  text-white">Find Event</button>
+            <Link to="/upcoming-events" className="btn bg-teal-600  text-white">
+              Find Event
+            </Link>
             <button className="btn  bg-teal-600 text-white ">
               Create Event
             </button>

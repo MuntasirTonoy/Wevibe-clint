@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../assets/logo.png";
 import { FiLogIn } from "react-icons/fi";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { MdOutlineLogout } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
@@ -13,7 +13,9 @@ const Navbar = () => {
       <div className="flex-1 ">
         <div className="flex justify-start items-center">
           <img src={logo} alt="site-logo" className="w-8" />
-          <a className="font-bold text-2xl">WeVibe</a>
+          <Link to="/" className="font-bold text-2xl">
+            WeVibe
+          </Link>
         </div>
       </div>
       <div className="flex gap-5 items-center">
@@ -123,11 +125,11 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-      <div className="hidden">
-        <button className="btn bg-teal-600 text-white ">
+      <div className="">
+        <Link to="/login" className="btn bg-teal-600 text-white ">
           {" "}
           Login <FiLogIn />
-        </button>
+        </Link>
       </div>
     </div>
   );
