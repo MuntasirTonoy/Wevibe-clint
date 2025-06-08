@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../assets/logo.png";
 import { FiLogIn } from "react-icons/fi";
 import { Link, NavLink } from "react-router";
@@ -6,8 +6,16 @@ import { TfiMenuAlt } from "react-icons/tfi";
 import { MdOutlineLogout } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { HiOutlineCalendarDateRange } from "react-icons/hi2";
+import { AuthContext } from "../Context/AuthContext";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  console.log(user);
+
+  const handleLogOut = () => {
+    logOut();
+  };
+
   return (
     <div className="navbar sticky top-0 z-50 bg-base-100 s px-5 lg:px-10 ">
       <div className="flex-1 ">
@@ -76,60 +84,62 @@ const Navbar = () => {
             </svg>
           </label>
         </div>
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
+        {user ? (
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-10 rounded-full">
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                />
+              </div>
             </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow space-y-2"
+            >
+              <li>
+                <a className="justify-between">{user.displayName}</a>
+              </li>
+              <hr className="mb-1 border-1 border-gray-300" />
+              <li>
+                <NavLink to="/manage-events">
+                  {" "}
+                  <TfiMenuAlt />
+                  Manage Events
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/Joined-events">
+                  <IoMdHeartEmpty />
+                  Joined Events
+                </NavLink>
+              </li>
+              <li className="lg:hidden">
+                <a>
+                  {" "}
+                  <HiOutlineCalendarDateRange /> Upcoming Events
+                </a>
+              </li>
+              <li>
+                <a onClick={handleLogOut}>
+                  <MdOutlineLogout /> Logout
+                </a>
+              </li>
+            </ul>
           </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow space-y-2"
-          >
-            <li>
-              <a className="justify-between">Profile Name</a>
-            </li>
-            <hr className="mb-1 border-1 border-gray-300" />
-            <li>
-              <NavLink to="/manage-events">
-                {" "}
-                <TfiMenuAlt />
-                Manage Events
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/Joined-events">
-                <IoMdHeartEmpty />
-                Joined Events
-              </NavLink>
-            </li>
-            <li className="lg:hidden">
-              <a>
-                {" "}
-                <HiOutlineCalendarDateRange /> Upcoming Events
-              </a>
-            </li>
-            <li>
-              <a>
-                {" "}
-                <MdOutlineLogout /> Logout
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="">
-        <Link to="/login" className="btn bg-teal-600 text-white ">
-          {" "}
-          Login <FiLogIn />
-        </Link>
+        ) : (
+          <div className="">
+            <Link to="/login" className="btn bg-teal-600 text-white ">
+              {" "}
+              Login <FiLogIn />
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

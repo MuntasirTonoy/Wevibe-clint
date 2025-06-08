@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EventCard from "./EventCard";
-
+import { Fade } from "react-awesome-reveal";
 const FeaturedEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,21 +79,23 @@ const FeaturedEvents = () => {
           </div>
         ) : (
           <div className="w-full sm:w-10/12 md:w-11/12 lg:w-11/12 px-5 mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12">
-              {events.map((event) => (
-                <EventCard
-                  key={event.id}
-                  id={event.id}
-                  title={event.title}
-                  description={event.description}
-                  imageUrl={event.imageUrl}
-                  eventType={event.eventType}
-                  location={event.location}
-                  date={event.date}
-                  joined={event.joined}
-                />
-              ))}
-            </div>
+            <Fade direction="up" triggerOnce>
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12">
+                {events.map((event) => (
+                  <EventCard
+                    key={event.id}
+                    id={event.id}
+                    title={event.title}
+                    description={event.description}
+                    imageUrl={event.imageUrl}
+                    eventType={event.eventType}
+                    location={event.location}
+                    date={event.date}
+                    joined={event.joined}
+                  />
+                ))}
+              </div>
+            </Fade>
           </div>
         )}
       </div>
