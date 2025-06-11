@@ -2,7 +2,7 @@ import Lottie from "lottie-react";
 import React, { useContext, useState } from "react";
 import { BsGoogle } from "react-icons/bs";
 import animationData from "../assets/login-lottie.json";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
 import Swal from "sweetalert2";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -13,10 +13,11 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { signIn, signInWithGoogle, loading } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       await signIn(email, password);
       Swal.fire({
@@ -42,7 +43,7 @@ const Login = () => {
         title: "Success!",
         text: "You have successfully logged in with Google!",
       });
-      navigate("/");
+      navigate(`${location?.state ? location.state : "/"}`);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -66,26 +67,22 @@ const Login = () => {
             />
           </div>
           <h1 className="text-4xl font-bold mb-4">Welcome Back</h1>
-          <p className="text-xl text-teal-100">
-            Sign in to continue to your account
-          </p>
+          <p className="text-xl">Sign in to continue to your account</p>
         </div>
       </div>
 
       {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-base-200">
         <div className="max-w-md w-full">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Sign In</h2>
-            <p className="text-gray-600">
-              Enter your credentials to access your account
-            </p>
+            <h2 className="text-3xl font-bold  mb-2">Sign In</h2>
+            <p className="">Enter your credentials to access your account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Field */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium  mb-2">
                 Email Address
               </label>
               <div className="relative">
@@ -115,7 +112,7 @@ const Login = () => {
 
             {/* Password Field */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium  mb-2">
                 Password
               </label>
               <div className="relative">
@@ -128,7 +125,7 @@ const Login = () => {
                     <path
                       fillRule="evenodd"
                       d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                      clipRule="evenodd" 
+                      clipRule="evenodd"
                     />
                   </svg>
                 </div>
@@ -150,12 +147,8 @@ const Login = () => {
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                  > 
-                    {showPassword ? (
-                    <FiEye />
-                    ) : (
-                      <FiEyeOff />
-                    )}
+                  >
+                    {showPassword ? <FiEye /> : <FiEyeOff />}
                   </svg>
                 </button>
               </div>

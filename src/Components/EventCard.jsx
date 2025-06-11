@@ -12,7 +12,7 @@ const EventCard = ({
   date,
 }) => {
   return (
-    <div className="bg-white rounded-lg border-1 border-gray-500/20 overflow-hidden flex flex-col h-full transition-all duration-300 hover:shadow-lg">
+    <div className="bg-base-300 rounded-lg border-1 border-gray-500/20 overflow-hidden flex flex-col h-full transition-all duration-300 hover:shadow-lg">
       {/* Image Section */}
       <div className="h-48 overflow-hidden">
         <img
@@ -33,15 +33,15 @@ const EventCard = ({
         </div>
 
         {/* Title */}
-        <h3 className="text-lg font-semibold mb-2 text-gray-900 line-clamp-1">
+        <h3 className="text-lg font-semibold mb-2 text-text-color line-clamp-1">
           {title}
         </h3>
 
         {/* Description */}
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{description}</p>
+        <p className="  text-sm mb-4 line-clamp-2">{description}</p>
 
         {/* Date */}
-        <div className="flex items-center text-gray-500 text-sm mb-2">
+        <div className="flex items-center  text-sm mb-2">
           <FaCalendarAlt className="h-4 w-4 mr-2" />
           {new Date(date).toLocaleDateString("en-US", {
             year: "numeric",
@@ -51,7 +51,7 @@ const EventCard = ({
         </div>
 
         {/* Location */}
-        <div className="flex items-center text-gray-500 text-sm">
+        <div className="flex items-center  text-sm">
           <FaMapMarkerAlt className="h-4 w-4 mr-2" />
           <span className="line-clamp-1">{location}</span>
         </div>
@@ -59,7 +59,7 @@ const EventCard = ({
 
       {/* Button Section */}
       <div className="px-4 pb-4">
-        <Link to={`/event/${id}`} className="block w-full">
+        <Link to="/event-details" className="block w-full">
           <button className="btn bg-teal-700 text-white w-full">
             View Event
           </button>

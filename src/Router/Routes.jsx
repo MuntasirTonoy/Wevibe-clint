@@ -7,12 +7,16 @@ import EventDetails from "../Pages/EventDetails";
 import UpcomingEvents from "../Pages/Upcomingevents";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
+import PrivateRoute from "../Private/PrivateRoute";
+import CreateEvent from "../Pages/CreateEvent";
+import EditEvent from "../Pages/EditEvent";
+import ErrorPage from "../Pages/ErrorPage";
 
 const Routes = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <h1> im error</h1>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -21,19 +25,47 @@ const Routes = createBrowserRouter([
 
       {
         path: "manage-events",
-        element: <ManageEvents />,
+        element: (
+          <PrivateRoute>
+            <ManageEvents />
+          </PrivateRoute>
+        ),
       },
       {
         path: "joined-events",
-        element: <JoinedEvents />,
+        element: (
+          <PrivateRoute>
+            <JoinedEvents />
+          </PrivateRoute>
+        ),
       },
       {
         path: "event-details",
-        element: <EventDetails />,
+        element: (
+          <PrivateRoute>
+            <EventDetails />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "create-event",
+        element: (
+          <PrivateRoute>
+            <CreateEvent />
+          </PrivateRoute>
+        ),
       },
       {
         path: "upcoming-events",
         element: <UpcomingEvents />,
+      },
+      {
+        path: "edit-event",
+        element: (
+          <PrivateRoute>
+            <EditEvent />
+          </PrivateRoute>
+        ),
       },
     ],
   },

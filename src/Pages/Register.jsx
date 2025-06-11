@@ -143,7 +143,7 @@ const Register = () => {
       {/* Left Side - Lottie */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-teal-400 via-teal-500 to-teal-600 items-center justify-center p-12">
         <div className="text-center text-white">
-          <div className="w-80 h-80 mx-auto mb-8 bg-white rounded-full flex items-center justify-center backdrop-blur-sm">
+          <div className="w-80 h-80 mx-auto mb-8 bg-base-200 rounded-full flex items-center justify-center backdrop-blur-sm">
             <Lottie
               animationData={animationData}
               loop={true}
@@ -156,26 +156,22 @@ const Register = () => {
             />
           </div>
           <h1 className="text-4xl font-bold mb-4">Join Us Today</h1>
-          <p className="text-xl text-teal-100">
-            Create your account and start your journey
-          </p>
+          <p className="text-xl ">Create your account and start your journey</p>
         </div>
       </div>
 
       {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-base-200">
         <div className="max-w-md w-full">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              Create Account
-            </h2>
-            <p className="text-gray-600">Fill in your details to get started</p>
+            <h2 className="text-3xl font-bold  mb-2">Create Account</h2>
+            <p className="">Fill in your details to get started</p>
           </div>
 
           <div className="space-y-6">
             {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium  mb-2">
                 Full Name
               </label>
               <input
@@ -194,9 +190,7 @@ const Register = () => {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
+              <label className="block text-sm font-medium  mb-2">Email</label>
               <input
                 type="email"
                 value={formData.email}
@@ -213,7 +207,7 @@ const Register = () => {
 
             {/* Photo URL */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium  mb-2">
                 Photo URL
               </label>
               <input
@@ -232,7 +226,7 @@ const Register = () => {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium  mb-2">
                 Password
               </label>
               <div className="relative">
@@ -272,7 +266,7 @@ const Register = () => {
 
           {/* Login Link */}
           <div className="mt-8 text-center">
-            <p className="text-gray-600">
+            <p>
               Already have an account?{" "}
               <Link to="/login" className="text-teal-600 font-medium">
                 Login here

@@ -7,9 +7,12 @@ import { MdOutlineLogout } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { HiOutlineCalendarDateRange } from "react-icons/hi2";
 import { AuthContext } from "../Context/AuthContext";
+import { ThemeContext } from "../Context/ThemeContext";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   console.log(user);
 
   const handleLogOut = () => {
@@ -17,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar sticky top-0 z-50 bg-base-100 s px-5 lg:px-10 ">
+    <div className="navbar sticky  top-0 z-50 bg-base-100 px-5 lg:px-10 ">
       <div className="flex-1 ">
         <div className="flex justify-start items-center">
           <img src={logo} alt="site-logo" className="w-8" />
@@ -41,6 +44,8 @@ const Navbar = () => {
               type="checkbox"
               value="synthwave"
               className="theme-controller"
+              onChange={toggleTheme}
+              checked={theme === "dark"}
             />
 
             <svg

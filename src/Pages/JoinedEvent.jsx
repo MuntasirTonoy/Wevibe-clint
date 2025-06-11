@@ -41,12 +41,10 @@ const JoinedEvents = () => {
   ];
 
   return (
-    <div className="bg-gray-50 min-h-screen w-full">
+    <div className="bg-base-200 min-h-screen w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex justify-between flex-wrap items-center mb-8 gap-5">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Your Joined Events
-          </h1>
+          <h1 className="text-3xl font-bold ">Your Joined Events</h1>
 
           <button className="bg-red-600 btn hover:bg-red-700 text-white ">
             <FaRegTrashAlt />
@@ -58,7 +56,7 @@ const JoinedEvents = () => {
             {userEvents.map((event) => (
               <div
                 key={event.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row"
+                className="bg-base-100 rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row"
               >
                 <div className="md:w-1/4 h-48 md:h-auto">
                   <img
@@ -74,13 +72,9 @@ const JoinedEvents = () => {
                       {event.eventType}
                     </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    {event.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm mt-2 mb-4">
-                    {event.description}
-                  </p>
-                  <div className="flex flex-col sm:flex-row sm:items-center text-gray-500 text-sm">
+                  <h3 className="text-xl font-semibold">{event.title}</h3>
+                  <p className=" text-sm mt-2 mb-4">{event.description}</p>
+                  <div className="flex flex-col sm:flex-row sm:items-center  text-sm">
                     <div className="flex items-center mr-6 mb-2 sm:mb-0">
                       <PiCalendar className="h-4 w-4 mr-2" />
                       {event.date}
@@ -93,7 +87,7 @@ const JoinedEvents = () => {
                 </div>
                 <div className="p-6 flex flex-row md:flex-col items-center justify-center space-x-4 md:space-x-0 md:space-y-4 border-t md:border-t-0 md:border-l border-gray-200">
                   <Link to="/event-details">
-                    <button className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md flex items-center transition-colors w-full">
+                    <button className="border border-gray-300 hover:bg-base-100 px-4 py-2 rounded-md flex items-center transition-colors w-full">
                       <TbListDetails className="mr-2" /> View Details
                     </button>
                   </Link>

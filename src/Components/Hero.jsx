@@ -4,14 +4,16 @@ import { Link } from "react-router";
 
 const Hero = () => {
   return (
-    <Fade direction="left" distance="200px">
-      <div className="hero py-10   lg:min-h-screen">
-        <div className="hero-content gap-20 flex-col lg:flex-row-reverse">
+    <div className="hero py-10 bg-base-200  lg:min-h-screen">
+      <div className="hero-content gap-20 flex-col lg:flex-row-reverse">
+        <Fade direction="right" distance="100px">
           <img
             src="https://plus.unsplash.com/premium_photo-1681965550198-c1c039421905?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             className="w-sm rounded-lg shadow-2xl"
-          />
-          <div className="lg:w-1/2 w-full px-5">
+          />{" "}
+        </Fade>
+        <div className="lg:w-1/2 w-full px-5">
+          <Fade direction="left" distance="100px">
             <h1 className="text-2xl lg:text-5xl lg:text-start text-center  font-bold">
               Make a difference in your community
             </h1>
@@ -27,14 +29,14 @@ const Hero = () => {
               >
                 Find Event
               </Link>
-              <button className="btn  bg-teal-600 text-white ">
+              <Link to="/create-event" className="btn  bg-teal-600 text-white ">
                 Create Event
-              </button>
+              </Link>
             </div>
-          </div>
+          </Fade>
         </div>
-      </div>
-    </Fade>
+      </div>{" "}
+    </div>
   );
 };
 
