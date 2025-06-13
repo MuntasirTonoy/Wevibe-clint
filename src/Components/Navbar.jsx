@@ -13,8 +13,6 @@ const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
 
-  console.log(user);
-
   const handleLogOut = () => {
     logOut();
   };

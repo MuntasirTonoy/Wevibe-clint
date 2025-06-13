@@ -11,6 +11,7 @@ import PrivateRoute from "../Private/PrivateRoute";
 import CreateEvent from "../Pages/CreateEvent";
 import EditEvent from "../Pages/EditEvent";
 import ErrorPage from "../Pages/ErrorPage";
+import Loading from "../Components/Loading";
 
 const Routes = createBrowserRouter([
   {
@@ -40,12 +41,18 @@ const Routes = createBrowserRouter([
         ),
       },
       {
-        path: "event-details",
+        path: "event/:id",
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_BACKEND_URL}/events/${params.id}`).then(
+            (res) => res.json()
+          ),
         element: (
           <PrivateRoute>
             <EventDetails />
           </PrivateRoute>
         ),
+        hydrateFallbackElement: <Loading />,
+        hydrateErrorElement: <ErrorPage />,
       },
       {
         path: "create-event",

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import EventCard from "../Components/EventCard";
 import animationData from "../assets/not-found.json";
-import loadingData from "../assets/loading.json";
 import Lottie from "lottie-react";
 import Loading from "../Components/Loading";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const UpcomingEvents = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,17 +14,24 @@ const UpcomingEvents = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch Events
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch("./event.json");
-        if (!response.ok) {
-          throw new Error("Failed to fetch events");
-        }
-        const data = await response.json();
-        setEvents(data);
+        setLoading(true);
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/events`
+        );
+        setEvents(response.data);
+        setError(null);
       } catch (err) {
-        setError(err.message);
+        console.error("Error fetching events:", err);
+        setError("Failed to load events. Please try again later.");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong while fetching events!",
+        });
       } finally {
         setLoading(false);
       }
@@ -33,14 +41,15 @@ const UpcomingEvents = () => {
   }, []);
 
   const eventTypes = Array.from(
-    new Set(events.map((event) => event.eventType))
+    new Set(Array.isArray(events) ? events.map((event) => event.eventType) : [])
   );
 
   const filteredEvents = events.filter((event) => {
     const matchesSearch =
-      event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.location.toLowerCase().includes(searchTerm.toLowerCase());
+      event.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      event.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      event.location?.toLowerCase().includes(searchTerm.toLowerCase());
+
     const matchesType = selectedType === "" || event.eventType === selectedType;
     return matchesSearch && matchesType;
   });
@@ -122,36 +131,20 @@ const UpcomingEvents = () => {
               ))}
             </select>
           </div>
-          <button className="btn bg-teal-600 text-white md:w-auto">
-            Search
-          </button>
         </div>
 
         {/* Events Grid */}
         {filteredEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                title={event.title}
-                description={event.description}
-                imageUrl={event.imageUrl}
-                eventType={event.eventType}
-                location={event.location}
-                date={event.date}
-              />
+              <EventCard key={event._id} event={event} />
             ))}
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className=" w-60 max-w-md mx-auto">
-              <Lottie
-                animationData={animationData}
-                loop={true}
-                autoplay={true}
-              />
-              <h1>no event found</h1>
+            <div className="w-60 max-w-md mx-auto">
+              <Lottie animationData={animationData} loop autoplay />
+              <h1>No event found</h1>
             </div>
             <button
               className="btn btn-ghost mt-4"
