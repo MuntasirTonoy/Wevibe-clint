@@ -46,8 +46,12 @@ const CreateEvent = () => {
       imageUrl,
       location,
       eventDate,
-      author: user?.displayName || user?.email,
+      author: {
+        name: user?.displayName || "Anonymous",
+        email: user?.email || "Anonymous",
+      },
       createdAt: new Date(),
+      joinedUsers: [],
     };
 
     try {
@@ -57,7 +61,6 @@ const CreateEvent = () => {
       );
       if (response.data.insertedId) {
         swal.fire({
-          position: "top-end",
           icon: "success",
           title: "Event created successfully",
           showConfirmButton: false,

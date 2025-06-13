@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import EventCard from "./EventCard";
 import { Fade } from "react-awesome-reveal";
+import { Link } from "react-router";
+
 const FeaturedEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,24 +11,16 @@ const FeaturedEvents = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch("/event.json");
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/events`
+        );
+
         if (!response.ok) {
           throw new Error("Failed to fetch events");
         }
+
         const data = await response.json();
-
-        // Process events - handle missing joined property and zero values
-        const processedEvents = data.map((event) => ({
-          ...event,
-          joined: typeof event.joined === "number" ? event.joined : 0,
-        }));
-
-        // Sort by joined count (descending) and get top 3
-        const sortedEvents = [...processedEvents]
-          .sort((a, b) => b.joined - a.joined)
-          .slice(0, 3);
-
-        setEvents(sortedEvents);
+        setEvents(data.slice(0, 3)); // Just grab the first 3 for featured
       } catch (err) {
         setError(err.message);
       } finally {
@@ -69,9 +63,7 @@ const FeaturedEvents = () => {
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-8">
-          Most Popular Events
-        </h2>
+        <h2 className="text-3xl font-bold text-center mb-8">Featured Events</h2>
 
         {events.length === 0 ? (
           <div className="text-center py-12">
@@ -82,25 +74,18 @@ const FeaturedEvents = () => {
             <Fade direction="up" triggerOnce>
               <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12">
                 {events.map((event) => (
-                  <EventCard
-                    key={event.id}
-                    id={event.id}
-                    title={event.title}
-                    description={event.description}
-                    imageUrl={event.imageUrl}
-                    eventType={event.eventType}
-                    location={event.location}
-                    date={event.date}
-                    joined={event.joined}
-                  />
+                  <EventCard key={event._id} event={event} />
                 ))}
               </div>
             </Fade>
           </div>
         )}
       </div>
+
       <div className="flex justify-center mt-8">
-        <button className="btn bg-teal-700 text-white">View All Events</button>
+        <Link to="/upcoming-events" className="btn bg-teal-700 text-white">
+          View All Events
+        </Link>
       </div>
     </section>
   );

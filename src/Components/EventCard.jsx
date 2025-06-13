@@ -15,7 +15,7 @@ const EventCard = ({ event }) => {
   } = event;
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden transition hover:shadow-lg">
+    <div className="bg-base-200 rounded-2xl shadow-md overflow-hidden transition hover:shadow-lg">
       <img src={image} alt={title} className="w-full h-48 object-cover" />
 
       <div className="p-6">
@@ -25,16 +25,16 @@ const EventCard = ({ event }) => {
         </span>
 
         {/* Title */}
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">{title}</h2>
+        <h2 className="text-xl font-semibold  mb-2">{title}</h2>
 
         {/* Description */}
-        <p className="text-gray-600 text-sm mb-4">
+        <p className=" text-sm mb-4">
           {description?.slice(0, 120)}
           {description?.length > 120 && "..."}
         </p>
 
         {/* Date and Location */}
-        <div className="flex items-center text-gray-500 text-sm mb-2">
+        <div className="flex items-center  text-sm mb-2">
           <FaCalendarAlt className="mr-2" />
           {new Date(date).toLocaleDateString("en-US", {
             year: "numeric",
@@ -42,14 +42,14 @@ const EventCard = ({ event }) => {
             day: "numeric",
           })}
         </div>
-        <div className="flex items-center text-gray-500 text-sm mb-4">
+        <div className="flex items-center  text-sm mb-4">
           <FaMapMarkerAlt className="mr-2" />
           {location}
         </div>
 
         {/* View Button */}
         <Link to={`/event/${event._id}`}>
-          <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 rounded-md transition">
+          <button className="w-full bg-teal-600 hover:bg-teal-600 text-white font-semibold py-2 rounded-md transition">
             View Event
           </button>
         </Link>

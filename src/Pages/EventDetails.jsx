@@ -1,11 +1,12 @@
-import React, { use } from "react";
+import { format } from "date-fns";
+
 import {
   PiCalendar,
   PiMapPin,
   PiTagChevron,
   PiArrowLeft,
 } from "react-icons/pi";
-import { useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
 
 const EventDetails = () => {
   const eventData = useLoaderData();
@@ -24,10 +25,13 @@ const EventDetails = () => {
   return (
     <div className="bg-base-200 min-h-screen w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <button className="flex items-center   mb-6 transition-colors">
+        <Link
+          to="/upcoming-events"
+          className="flex items-center   mb-6 transition-colors"
+        >
           <PiArrowLeft className="h-4 w-4 mr-2" />
           Back to Events
-        </button>
+        </Link>
 
         <div className="bg-base-100 rounded-lg shadow-md overflow-hidden">
           <div className="h-64 md:h-96 w-full relative">
@@ -48,7 +52,7 @@ const EventDetails = () => {
             <div className="flex flex-col sm:flex-row sm:items-center mb-6">
               <div className="flex items-center  mr-6 mb-2 sm:mb-0">
                 <PiCalendar className="h-5 w-5 mr-2" />
-                {new Date(eventDate).toLocaleDateString()}
+                {format(new Date(eventDate), "PP")}
               </div>
               <div className="flex items-center ">
                 <PiMapPin className="h-5 w-5 mr-2" />
@@ -65,7 +69,7 @@ const EventDetails = () => {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <div className="mb-4 sm:mb-0">
                   <h3 className="text-lg font-medium  mb-1">Organized by:</h3>
-                  <p>{author}</p>
+                  <p>{author.name}</p>
                   Event created on:{" "}
                   <span>{new Date(createdAt).toLocaleDateString()}</span>
                 </div>

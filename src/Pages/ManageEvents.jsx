@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   PiPlus,
   PiTagChevron,
@@ -12,48 +12,57 @@ import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import Loading from "../Components/Loading";
 import swal from "sweetalert2";
+import { AuthContext } from "../context/AuthContext";
 
 const ManageEvents = () => {
+  const { user } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const fetchEvents = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/events");
-      setEvents(response.data);
-      setError(null);
-    } catch (err) {
-      setError("Failed to fetch events. Please try again later.");
-      console.error("Error fetching events:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    const fetchUserEvents = async () => {
+      if (!user?.email) return;
 
-  const handleDelete = async (eventId) => {
-    if (window.confirm("Are you sure you want to delete this event?")) {
       try {
-        await axios.delete(`http://localhost:5000/events/${eventId}`);
-       swal.fire({
-        icon: "success",
-        title: "Event deleted successfully",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-        fetchEvents(); // Refresh the events list
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/events`,
+          {
+            params: { author: user.email },
+          }
+        );
+        setEvents(res.data);
       } catch (err) {
-        swal.fire({
-        icon: "error",
-        title: "Failed to delete event",
-        text: "Please try again later.",
-      });
-        console.error("Error deleting event:", err);
+        console.error("Error fetching user's events:", err);
+        setError("Failed to load events. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserEvents();
+  }, [user?.email]);
+
+  const handleDelete = async (id) => {
+    const confirm = await swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e53e3e",
+      cancelButtonColor: "#a0aec0",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (confirm.isConfirmed) {
+      try {
+        await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/events/${id}`);
+        setEvents((prev) => prev.filter((event) => event._id !== id));
+        swal.fire("Deleted!", "Your event has been deleted.", "success");
+      } catch (err) {
+        console.error("Delete error:", err);
+        swal.fire("Error!", "Failed to delete the event.", "error");
       }
     }
   };
@@ -151,7 +160,7 @@ const ManageEvents = () => {
                     Edit
                   </Link>
 
-                  <button 
+                  <button
                     onClick={() => handleDelete(event._id)}
                     className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md flex items-center transition-colors w-full"
                   >
