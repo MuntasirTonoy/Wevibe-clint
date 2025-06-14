@@ -58,7 +58,7 @@ const EditEvent = () => {
 
       if (response.data.modifiedCount > 0 || response.data.acknowledged) {
         Swal.fire("Success!", "Event updated successfully.", "success");
-        navigate("/manage-events"); // redirect as needed
+        navigate("/manage-events");
       } else {
         Swal.fire("No Changes", "No changes were made to the event.", "info");
       }
