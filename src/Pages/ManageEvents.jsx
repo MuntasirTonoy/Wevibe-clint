@@ -13,6 +13,8 @@ import axios from "axios";
 import Loading from "../Components/Loading";
 import swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
+import Lottie from "lottie-react";
+import animationData from "../assets/not-found.json";
 
 const ManageEvents = () => {
   const { user } = useContext(AuthContext);
@@ -172,20 +174,19 @@ const ManageEvents = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 bg-white rounded-lg shadow-md">
+          <div className="text-center py-12 bg-white rounded-lg ">
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               You haven't created any events yet
             </h3>
-            <p className="text-gray-500 mb-6">
+            <p className="text-gray-500 mb-6 px-2">
               Create your first event and start making a difference in your
               community.
             </p>
-            <Link to="/create-event">
-              <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md flex items-center transition-colors">
-                <FiPlus className="h-4 w-4 mr-2" />
-                Create Event
-              </button>
-            </Link>
+            <Lottie
+              className="w-52 mx-auto"
+              animationData={animationData}
+              loop={true}
+            />
           </div>
         )}
       </div>

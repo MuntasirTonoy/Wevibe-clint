@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
+import Swal from "sweetalert2";
 import {
   FaCalendarAlt,
   FaMapMarkerAlt,
@@ -12,13 +14,17 @@ import {
 } from "react-icons/fa";
 
 const EditEvent = () => {
+  const eventData = useLoaderData();
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [eventType, setEventType] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [location, setLocation] = useState("");
-  const [eventDate, setEventDate] = useState(new Date());
+
+  const [title, setTitle] = useState(eventData.title || "");
+  const [description, setDescription] = useState(eventData.description || "");
+  const [eventType, setEventType] = useState(eventData.eventType || "");
+  const [imageUrl, setImageUrl] = useState(eventData.imageUrl || "");
+  const [location, setLocation] = useState(eventData.location || "");
+  const [eventDate, setEventDate] = useState(
+    eventData.eventDate ? new Date(eventData.eventDate) : new Date()
+  );
 
   const eventTypes = [
     "Cleanup",
@@ -29,10 +35,13 @@ const EditEvent = () => {
     "Animal Welfare",
   ];
 
-  const handleSubmit = (e) => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newEvent = {
+    const updatedEvent = {
       title,
       description,
       eventType,
@@ -40,12 +49,24 @@ const EditEvent = () => {
       location,
       eventDate,
     };
-    console.log(newEvent);
-  };
 
-  // Set minimum date to tomorrow
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/events/${eventData._id}`,
+        updatedEvent
+      );
+
+      if (response.data.modifiedCount > 0 || response.data.acknowledged) {
+        Swal.fire("Success!", "Event updated successfully.", "success");
+        navigate("/manage-events"); // redirect as needed
+      } else {
+        Swal.fire("No Changes", "No changes were made to the event.", "info");
+      }
+    } catch (error) {
+      console.error("Error updating event:", error);
+      Swal.fire("Error", "Failed to update the event.", "error");
+    }
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen w-full">
@@ -53,10 +74,11 @@ const EditEvent = () => {
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="p-6">
             <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-              Create New Event
+              Edit Event
             </h1>
             <form onSubmit={handleSubmit}>
               <div className="space-y-6">
+                {/* Title */}
                 <div>
                   <label
                     htmlFor="title"
@@ -79,6 +101,8 @@ const EditEvent = () => {
                     />
                   </div>
                 </div>
+
+                {/* Description */}
                 <div>
                   <label
                     htmlFor="description"
@@ -101,6 +125,8 @@ const EditEvent = () => {
                     />
                   </div>
                 </div>
+
+                {/* Event Type */}
                 <div>
                   <label
                     htmlFor="event-type"
@@ -130,6 +156,8 @@ const EditEvent = () => {
                     </select>
                   </div>
                 </div>
+
+                {/* Image URL */}
                 <div>
                   <label
                     htmlFor="image-url"
@@ -152,6 +180,8 @@ const EditEvent = () => {
                     />
                   </div>
                 </div>
+
+                {/* Location */}
                 <div>
                   <label
                     htmlFor="location"
@@ -174,6 +204,8 @@ const EditEvent = () => {
                     />
                   </div>
                 </div>
+
+                {/* Event Date */}
                 <div>
                   <label
                     htmlFor="event-date"
@@ -198,9 +230,11 @@ const EditEvent = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Submit Button */}
                 <div className="pt-4">
-                  <button className="btn w-full " type="submit" size="lg">
-                    Create Event
+                  <button className="btn w-full" type="submit">
+                    Update Event
                   </button>
                 </div>
               </div>

@@ -7,8 +7,8 @@ const EventCard = ({ event }) => {
   const {
     _id,
     title,
-    description,
-    image,
+
+    imageUrl,
     date,
     location,
     eventType = "General",
@@ -16,7 +16,7 @@ const EventCard = ({ event }) => {
 
   return (
     <div className="bg-base-200 rounded-2xl shadow-md overflow-hidden transition hover:shadow-lg">
-      <img src={image} alt={title} className="w-full h-48 object-cover" />
+      <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
 
       <div className="p-6">
         {/* Event Type Badge */}
@@ -26,12 +26,6 @@ const EventCard = ({ event }) => {
 
         {/* Title */}
         <h2 className="text-xl font-semibold  mb-2">{title}</h2>
-
-        {/* Description */}
-        <p className=" text-sm mb-4">
-          {description?.slice(0, 120)}
-          {description?.length > 120 && "..."}
-        </p>
 
         {/* Date and Location */}
         <div className="flex items-center  text-sm mb-2">

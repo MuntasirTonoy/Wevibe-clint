@@ -88,7 +88,7 @@ const UpcomingEvents = () => {
   }
 
   return (
-    <div className="bg-base-200 min-h-screen w-full">
+    <div className="bg-base-100  min-h-screen w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-base-content mb-4">

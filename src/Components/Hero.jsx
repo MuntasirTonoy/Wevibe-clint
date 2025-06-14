@@ -1,20 +1,19 @@
+import Lottie from "lottie-react";
 import React from "react";
 import { Fade } from "react-awesome-reveal";
 import { Link } from "react-router";
+import animationData from "../assets/hero-loottie.json";
 
 const Hero = () => {
   return (
     <div className="hero py-10 bg-base-200  lg:min-h-screen">
-      <div className="hero-content gap-20 flex-col lg:flex-row-reverse">
+      <div className="hero-content gap-5 lg:gap-20 flex-col lg:flex-row-reverse">
         <Fade direction="right" distance="100px">
-          <img
-            src="https://plus.unsplash.com/premium_photo-1681965550198-c1c039421905?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            className="w-sm rounded-lg shadow-2xl"
-          />{" "}
+          <Lottie animationData={animationData} loop autoplay />
         </Fade>
         <div className="lg:w-1/2 w-full px-5">
           <Fade direction="left" distance="100px">
-            <h1 className="text-2xl lg:text-5xl lg:text-start text-center  font-bold">
+            <h1 className="text-3xl lg:text-5xl lg:text-start text-center  font-bold">
               Make a difference in your community
             </h1>
             <p className="py-6 lg:text-start text-center">

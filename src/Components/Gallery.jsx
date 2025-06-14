@@ -51,11 +51,10 @@ const Gallery = () => {
         </div>
 
         <Marquee
-          gradient={true}
+          gradient={false}
           speed={110}
           pauseOnHover={true}
           direction="left"
-          gradientWidth={200}
         >
           {galleryImages.map((image, index) => (
             <div

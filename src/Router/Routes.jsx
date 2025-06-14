@@ -67,12 +67,15 @@ const Routes = createBrowserRouter([
         element: <UpcomingEvents />,
       },
       {
-        path: "edit-event",
+        path: "edit-event/:id",
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_BACKEND_URL}/events/${params.id}`),
         element: (
           <PrivateRoute>
             <EditEvent />
           </PrivateRoute>
         ),
+        hydrateFallbackElement: <Loading />,
       },
     ],
   },

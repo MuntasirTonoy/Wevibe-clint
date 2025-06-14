@@ -5,8 +5,8 @@ import { Link, NavLink } from "react-router";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { MdOutlineLogout } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
-import { HiOutlineCalendarDateRange } from "react-icons/hi2";
-import { AuthContext } from "../Context/AuthContext";
+import { HiOutlineCalendarDateRange, HiPlus } from "react-icons/hi2";
+import { AuthContext } from "../context/AuthContext";
 import { ThemeContext } from "../Context/ThemeContext";
 
 const Navbar = () => {
@@ -127,6 +127,12 @@ const Navbar = () => {
                   {" "}
                   <HiOutlineCalendarDateRange /> Upcoming Events
                 </a>
+              </li>
+              <li>
+                <NavLink to="/create-event" className="flex items-center">
+                  <HiPlus />
+                  Create Event
+                </NavLink>
               </li>
               <li>
                 <a onClick={handleLogOut}>
