@@ -174,7 +174,7 @@ const ManageEvents = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 bg-white rounded-lg ">
+          <div className="text-center py-12 bg-base-200 rounded-lg ">
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               You haven't created any events yet
             </h3>
