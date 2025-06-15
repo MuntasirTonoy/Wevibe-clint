@@ -7,9 +7,8 @@ const EventCard = ({ event }) => {
   const {
     _id,
     title,
-
     imageUrl,
-    date,
+    eventDate,
     location,
     eventType = "General",
   } = event;
@@ -30,7 +29,7 @@ const EventCard = ({ event }) => {
         {/* Date and Location */}
         <div className="flex items-center  text-sm mb-2">
           <FaCalendarAlt className="mr-2" />
-          {new Date(date).toLocaleDateString("en-US", {
+          {new Date(eventDate).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",

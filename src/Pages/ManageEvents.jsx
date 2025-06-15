@@ -122,38 +122,43 @@ const ManageEvents = () => {
                 key={event._id}
                 className="bg-base-100 rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row"
               >
-                <div className="md:w-1/4 h-48 md:h-auto">
+                {/* Fixed width image container */}
+                <div className="md:w-64 lg:w-80 h-48 md:h-auto flex-shrink-0">
                   <img
                     src={event.imageUrl}
                     alt={event.title}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="p-6 flex-grow">
-                  <div className="inline-block px-2 py-1 mb-2 text-xs font-semibold text-teal-700 bg-indigo-100 rounded-full">
-                    <div className="flex items-center">
+                <div className="p-6 flex-grow flex flex-col">
+                  <div className=" inline-flex  ">
+                    <span className="bg-indigo-100 text-teal-800 flex px-2 py-1 rounded-full text-xs font-semibold items-center mb-3 ">
                       <PiTagChevron className="h-3 w-3 mr-1" />
                       {event.eventType}
-                    </div>
+                    </span>
                   </div>
                   <h3 className="text-xl font-semibold">{event.title}</h3>
-                  <p className="text-sm mt-2 mb-4">{event.description}</p>
-                  <div className="flex flex-col sm:flex-row sm:items-center text-sm">
-                    <div className="flex items-center mr-6 mb-2 sm:mb-0">
-                      <PiCalendar className="h-4 w-4 mr-2" />
-                      {new Date(event.eventDate).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </div>
-                    <div className="flex items-center">
-                      <PiMapPin className="h-4 w-4 mr-2" />
-                      {event.location}
+                  <p className="text-sm mt-2 mb-4 line-clamp-3">
+                    {event.description}
+                  </p>
+                  <div className="mt-auto">
+                    <div className="flex flex-col sm:flex-row sm:items-center text-sm">
+                      <div className="flex items-center mr-6 mb-2 sm:mb-0">
+                        <PiCalendar className="h-4 w-4 mr-2" />
+                        {new Date(event.eventDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </div>
+                      <div className="flex items-center">
+                        <PiMapPin className="h-4 w-4 mr-2" />
+                        {event.location}
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="p-6 flex flex-row md:flex-col items-center justify-center space-x-4 md:space-x-0 md:space-y-4 border-t md:border-t-0 md:border-l border-gray-200">
+                <div className="p-6 flex flex-row md:flex-col items-center justify-center space-x-4 md:space-x-0 md:space-y-4 border-t md:border-t-0 md:border-l border-gray-200 flex-shrink-0">
                   <Link
                     to={`/edit-event/${event._id}`}
                     className="border border-gray-300 hover:bg-base-200 px-4 py-2 rounded-md flex items-center transition-colors w-full"
