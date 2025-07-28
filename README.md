@@ -1,12 +1,70 @@
-# weVibe
+# 🌍 WeVibe – Social Development Events Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Site:** [https://we-vibe-t7.web.app/](https://we-vibe-t7.web.app/)
 
-Currently, two official plugins are available:
+WeVibe is a community-driven event management platform where users can create, join, and track social service events in their local area. It promotes engagement in social good initiatives such as cleanups, tree plantations, and donations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 🔐 **Authentication (Email/Password + Google Login)**
+- 🎫 **Create, Join, and Manage Events** (Private/Protected Routes)
+- 📆 **Date-based Filtering (Only future events shown)**
+- 🔍 **Search and Filter by Event Type**
+- 🎨 **Dark/Light Theme Toggle**
+- 📧 **Newsletter Section (UI only)**
+- 📷 **Event Gallery (Static UI)**
+- 🧠 **JWT-based Authentication for Route Protection**
+
+---
+
+## 🗺️ Pages Overview
+
+### ✅ Public Pages
+
+- **Home**: Banner, features, gallery, and newsletter.
+- **Login/Register**: With validation and Google sign-in support.
+- **Upcoming Events**: Grid of all future events with filtering and searching.
+
+### 🔐 Private Pages (JWT-Protected)
+
+- **Create Event**: Create an event with title, description, date (only future allowed), etc.
+- **Manage Events**: Update (and optionally delete) events created by the user.
+- **Joined Events**: View all events the user has joined, sorted by date.
+- **Event Details**: Detailed view of any event with "Join Event" option.
+
+---
+
+## 🛡️ Authentication
+
+- Firebase authentication using Email/Password & Google
+- JWT token created and stored on login
+- Private routes protected with JWT verification
+
+---
+
+## 🖥️ Tech Stack
+
+### Frontend
+
+- **React**, **React Router v7**
+- **Tailwind CSS**
+- **Firebase Authentication**
+- **Axios**, **React Datepicker**, **SweetAlert2**
+
+### Backend
+
+- **Node.js**, **Express.js**
+- **MongoDB**
+- **dotenv** for environment configuration
+- **JWT** for authentication and route protection
+- **CORS**, **Morgan**, **Firebase Admin SDK**
+
+---
+
+## 🌍 Deployment
+
+- **Frontend** hosted on: [Firebase Hosting](https://we-vibe-t7.web.app/)
+
+## ---developed by : Muntasir Mahmud (Tonoy)
