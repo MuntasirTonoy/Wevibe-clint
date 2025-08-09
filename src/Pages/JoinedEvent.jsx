@@ -87,7 +87,7 @@ const JoinedEvents = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6 text-sm gap-2">
                       <div className="flex items-center">
                         <PiCalendar className="h-4 w-4 mr-2" />
-                        {event.date}
+                        {event.eventDate}
                       </div>
                       <div className="flex items-center">
                         <PiMapPin className="h-4 w-4 mr-2" />
