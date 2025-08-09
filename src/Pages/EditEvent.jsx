@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLoaderData, useNavigate } from "react-router";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+
+import { useForm, Controller } from "react-hook-form";
+
 import {
   FaCalendarAlt,
   FaMapMarkerAlt,
@@ -17,15 +20,6 @@ const EditEvent = () => {
   const eventData = useLoaderData();
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState(eventData.title || "");
-  const [description, setDescription] = useState(eventData.description || "");
-  const [eventType, setEventType] = useState(eventData.eventType || "");
-  const [imageUrl, setImageUrl] = useState(eventData.imageUrl || "");
-  const [location, setLocation] = useState(eventData.location || "");
-  const [eventDate, setEventDate] = useState(
-    eventData.eventDate ? new Date(eventData.eventDate) : new Date()
-  );
-
   const eventTypes = [
     "Cleanup",
     "Plantation",
@@ -38,22 +32,27 @@ const EditEvent = () => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      title: eventData.title || "",
+      description: eventData.description || "",
+      eventType: eventData.eventType || "",
+      imageUrl: eventData.imageUrl || "",
+      location: eventData.location || "",
+      eventDate: eventData.eventDate ? new Date(eventData.eventDate) : null,
+    },
+  });
 
-    const updatedEvent = {
-      title,
-      description,
-      eventType,
-      imageUrl,
-      location,
-      eventDate,
-    };
-
+  const onSubmit = async (data) => {
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_BACKEND_URL}/events/${eventData._id}`,
-        updatedEvent
+        data
       );
 
       if (response.data.modifiedCount > 0 || response.data.acknowledged) {
@@ -69,81 +68,97 @@ const EditEvent = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen w-full">
+    <div className="bg-base-200 min-h-screen w-full">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-base-300 rounded-lg shadow-md overflow-hidden">
           <div className="p-6">
-            <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+            <h1 className="text-2xl font-semibold text-base-content mb-6">
               Edit Event
             </h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="space-y-6">
                 {/* Title */}
                 <div>
                   <label
                     htmlFor="title"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-base-content mb-1"
                   >
                     Event Title *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FaHeading className="h-5 w-5 text-gray-400" />
+                      <FaHeading className="h-5 w-5 text-base-content" />
                     </div>
                     <input
-                      type="text"
                       id="title"
-                      required
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      {...register("title", { required: "Title is required" })}
+                      type="text"
+                      className={`block w-full pl-10 pr-3 py-2 border rounded-md leading-5 bg-base-100     placeholder-gray-500 focus:outline-none focus:ring-teal-600focus:border-teal-500  sm:text-sm ${
+                        errors.title ? "border-red-500" : "border-gray-300"
+                      }`}
                       placeholder="Enter event title"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
                     />
                   </div>
+                  {errors.title && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.title.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Description */}
                 <div>
                   <label
                     htmlFor="description"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-base-content mb-1"
                   >
                     Description *
                   </label>
                   <div className="relative">
                     <div className="absolute top-3 left-3 pointer-events-none">
-                      <FaFileAlt className="h-5 w-5 text-gray-400" />
+                      <FaFileAlt className="h-5 w-5 text-base-content" />
                     </div>
                     <textarea
                       id="description"
+                      {...register("description", {
+                        required: "Description is required",
+                      })}
                       rows={4}
-                      required
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      className={`block w-full pl-10 pr-3 py-2 border rounded-md leading-5 bg-base-100    placeholder-gray-500 focus:outline-none focus:ring-teal-600 focus:border-teal-500  sm:text-sm ${
+                        errors.description
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      }`}
                       placeholder="Describe your event"
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
                     />
                   </div>
+                  {errors.description && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.description.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Event Type */}
                 <div>
                   <label
-                    htmlFor="event-type"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    htmlFor="eventType"
+                    className="block text-sm font-medium text-base-content mb-1"
                   >
                     Event Type *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FaTags className="h-5 w-5 text-gray-400" />
+                      <FaTags className="h-5 w-5 text-base-content   " />
                     </div>
                     <select
-                      id="event-type"
-                      required
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      value={eventType}
-                      onChange={(e) => setEventType(e.target.value)}
+                      id="eventType"
+                      {...register("eventType", {
+                        required: "Please select an event type",
+                      })}
+                      className={`block w-full pl-10 pr-3 py-2 border rounded-md leading-5 bg-base-100    focus:outline-none focus:ring-teal-600 focus:border-teal-500  sm:text-sm ${
+                        errors.eventType ? "border-red-500" : "border-gray-300"
+                      }`}
                     >
                       <option value="" disabled>
                         Select event type
@@ -155,86 +170,127 @@ const EditEvent = () => {
                       ))}
                     </select>
                   </div>
+                  {errors.eventType && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.eventType.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Image URL */}
                 <div>
                   <label
-                    htmlFor="image-url"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    htmlFor="imageUrl"
+                    className="block text-sm font-medium text-base-content mb-1"
                   >
                     Thumbnail Image URL *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FaImage className="h-5 w-5 text-gray-400" />
+                      <FaImage className="h-5 w-5 text-base-content   " />
                     </div>
                     <input
+                      id="imageUrl"
+                      {...register("imageUrl", {
+                        required: "Image URL is required",
+                        pattern: {
+                          value:
+                            /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg|webp|bmp))$/i,
+                          message: "Enter a valid image URL",
+                        },
+                      })}
                       type="url"
-                      id="image-url"
-                      required
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      className={`block w-full pl-10 pr-3 py-2 border rounded-md leading-5 bg-base-100    placeholder-gray-500 focus:outline-none focus:ring-teal-600 focus:border-teal-500  sm:text-sm ${
+                        errors.imageUrl ? "border-red-500" : "border-gray-300"
+                      }`}
                       placeholder="Enter image URL"
-                      value={imageUrl}
-                      onChange={(e) => setImageUrl(e.target.value)}
                     />
                   </div>
+                  {errors.imageUrl && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.imageUrl.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Location */}
                 <div>
                   <label
                     htmlFor="location"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-base-content mb-1"
                   >
                     Location *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
+                      <FaMapMarkerAlt className="h-5 w-5 text-base-content   " />
                     </div>
                     <input
-                      type="text"
                       id="location"
-                      required
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      {...register("location", {
+                        required: "Location is required",
+                      })}
+                      type="text"
+                      className={`block w-full pl-10 pr-3 py-2 border rounded-md leading-5 bg-base-100    placeholder-gray-500 focus:outline-none focus:ring-teal-600 focus:border-teal-500  sm:text-sm ${
+                        errors.location ? "border-red-500" : "border-gray-300"
+                      }`}
                       placeholder="Enter event location"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
                     />
                   </div>
+                  {errors.location && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.location.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Event Date */}
                 <div>
                   <label
-                    htmlFor="event-date"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    htmlFor="eventDate"
+                    className="block text-sm font-medium text-base-content mb-1"
                   >
                     Event Date *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                      <FaCalendarAlt className="h-5 w-5 text-gray-400" />
+                      <FaCalendarAlt className="h-5 w-5 text-base-content   " />
                     </div>
-                    <div className="w-full">
-                      <DatePicker
-                        id="event-date"
-                        selected={eventDate}
-                        onChange={(date) => setEventDate(date)}
-                        minDate={tomorrow}
-                        placeholderText="Select event date"
-                        required
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      />
-                    </div>
+                    <Controller
+                      control={control}
+                      name="eventDate"
+                      rules={{ required: "Event date is required" }}
+                      render={({ field }) => (
+                        <DatePicker
+                          id="eventDate"
+                          selected={field.value}
+                          onChange={field.onChange}
+                          minDate={tomorrow}
+                          placeholderText="Select event date"
+                          className={`block w-full pl-10 pr-3 py-2 border rounded-md leading-5 bg-base-100  placeholder-gray-500 focus:outline-none focus:ring-teal-600 focus:border-teal-500  sm:text-sm ${
+                            errors.eventDate
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          }`}
+                        />
+                      )}
+                    />
                   </div>
+                  {errors.eventDate && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.eventDate.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Submit Button */}
                 <div className="pt-4">
-                  <button className="btn w-full" type="submit">
-                    Update Event
+                  <button
+                    className="btn w-full"
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Updating..." : "Update Event"}
                   </button>
                 </div>
               </div>

@@ -15,6 +15,7 @@ import { AuthContext } from "../context/AuthContext";
 import Lottie from "lottie-react";
 import animationData from "../assets/not-found.json";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 const fetchUserEvents = async (email) => {
   if (!email) return [];
@@ -55,7 +56,6 @@ const ManageEvents = () => {
       try {
         await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/events/${id}`);
         swal.fire("Deleted!", "Your event has been deleted.", "success");
-        // Refetch to update the event list
         queryClient.invalidateQueries(["userEvents", user?.email]);
       } catch (err) {
         console.error("Delete error:", err);
@@ -112,39 +112,40 @@ const ManageEvents = () => {
         </div>
 
         {events.length > 0 ? (
-          <div className="space-y-6">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
             {events.map((event) => (
               <div
                 key={event._id}
-                className="bg-base-100 rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row"
+                className="bg-base-100 rounded-lg shadow-md grid md:grid-cols-12 md:h-64 overflow-hidden relative"
               >
-                <div className="md:w-64 lg:w-80 h-48 md:h-auto flex-shrink-0">
+                {/* Image */}
+                <div className="col-span-4 overflow-hidden max-h-72 ">
                   <img
                     src={event.imageUrl}
                     alt={event.title}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 </div>
-                <div className="p-6 flex-grow flex flex-col">
-                  <div className="inline-flex">
-                    <span className="bg-indigo-100 text-teal-800 flex px-2 py-1 rounded-full text-xs font-semibold items-center mb-3">
+
+                {/* Content + Actions wrapper */}
+                <div className="md:col-span-8 flex flex-col p-6 gap-4">
+                  {/* Content: flex-grow so buttons can stick bottom */}
+                  <div className="flex-grow">
+                    <div className="inline-flex items-center px-2 py-1 mb-2 text-xs font-semibold text-teal-700 bg-indigo-100 rounded-full">
                       <PiTagChevron className="h-3 w-3 mr-1" />
                       {event.eventType}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-semibold">{event.title}</h3>
-                  <p className="text-sm mt-2 mb-4 line-clamp-3">
-                    {event.description}
-                  </p>
-                  <div className="mt-auto">
-                    <div className="flex flex-col sm:flex-row sm:items-center text-sm">
-                      <div className="flex items-center mr-6 mb-2 sm:mb-0">
+                    </div>
+                    <h3 className="text-lg font-semibold leading-snug">
+                      {event.title}
+                    </h3>
+                    <p className="text-sm mt-2 mb-4 line-clamp-3">
+                      {event.description}
+                    </p>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6 text-sm gap-2">
+                      <div className="flex items-center">
                         <PiCalendar className="h-4 w-4 mr-2" />
-                        {new Date(event.eventDate).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
+                        {format(new Date(event.eventDate), "MMMM dd, yyyy")}
                       </div>
                       <div className="flex items-center">
                         <PiMapPin className="h-4 w-4 mr-2" />
@@ -152,30 +153,32 @@ const ManageEvents = () => {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="p-6 flex flex-row md:flex-col items-center justify-center space-x-4 md:space-x-0 md:space-y-4 border-t md:border-t-0 md:border-l border-gray-200 flex-shrink-0">
-                  <Link
-                    to={`/edit-event/${event._id}`}
-                    className="border border-gray-300 hover:bg-base-200 px-4 py-2 rounded-md flex items-center transition-colors w-full"
-                  >
-                    <PiPencil className="h-4 w-4 mr-2" />
-                    Edit
-                  </Link>
 
-                  <button
-                    onClick={() => handleDelete(event._id)}
-                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md flex items-center transition-colors w-full"
-                  >
-                    <PiTrash className="h-4 w-4 mr-2" />
-                    Delete
-                  </button>
+                  {/* Actions: bottom right */}
+                  <div className="flex justify-end space-x-4 mt-auto">
+                    <Link
+                      to={`/edit-event/${event._id}`}
+                      className="border border-gray-300 hover:bg-base-200 px-4 py-2 rounded-md flex items-center transition-colors"
+                    >
+                      <PiPencil className="h-4 w-4 mr-2" />
+                      Edit
+                    </Link>
+
+                    <button
+                      onClick={() => handleDelete(event._id)}
+                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md flex items-center transition-colors"
+                    >
+                      <PiTrash className="h-4 w-4 mr-2" />
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
           <div className="text-center py-12 bg-base-200 rounded-lg">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <h3 className="text-lg font-medium text-base-content mb-2">
               You haven't created any events yet
             </h3>
             <p className="text-gray-500 mb-6 px-2">
