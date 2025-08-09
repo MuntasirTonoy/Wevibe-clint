@@ -42,7 +42,7 @@ const EventCard = ({ event }) => {
 
         {/* View Button */}
         <Link to={`/event/${event._id}`}>
-          <button className="w-full bg-teal-600 hover:bg-teal-600 text-white font-semibold py-2 rounded-md transition">
+          <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 rounded-md transition cursor-pointer">
             View Event
           </button>
         </Link>

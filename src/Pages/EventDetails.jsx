@@ -1,10 +1,12 @@
 import { format } from "date-fns";
-import { useContext, useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router";
+import { useContext, useState } from "react";
+import { Link, useParams } from "react-router";
 import axios from "axios";
 import swal from "sweetalert2";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { AuthContext } from "../context/AuthContext";
+import Loading from "../Components/Loading";
 
 import {
   PiCalendar,
@@ -13,10 +15,38 @@ import {
   PiArrowLeft,
 } from "react-icons/pi";
 
+const fetchEventDetails = async (id) => {
+  const res = await axios.get(
+    `${import.meta.env.VITE_BACKEND_URL}/events/${id}`
+  );
+  return res.data;
+};
+
 const EventDetails = () => {
-  const eventData = useLoaderData();
   const { user } = useContext(AuthContext);
-  const [joined, setJoined] = useState(false);
+  const { id } = useParams();
+  const queryClient = useQueryClient();
+
+  const {
+    data: eventData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["event-details", id],
+    queryFn: () => fetchEventDetails(id),
+    enabled: !!id,
+  });
+
+  const [isJoining, setIsJoining] = useState(false);
+
+  if (isLoading) return <Loading />;
+  if (isError)
+    return (
+      <div className="text-center py-12 text-red-600">
+        Failed to load event: {error.message}
+      </div>
+    );
 
   const {
     _id,
@@ -31,14 +61,8 @@ const EventDetails = () => {
     joinedUsers = [],
   } = eventData;
 
-  // Initialize joined state
-  useEffect(() => {
-    if (user?.email && joinedUsers.includes(user.email)) {
-      setJoined(true);
-    }
-  }, [user, joinedUsers]);
+  const joined = user?.email && joinedUsers.includes(user.email);
 
-  // Handle join/unjoin toggle
   const handleJoinEvent = async () => {
     if (!user) {
       swal.fire("Login Required", "Please login to join the event.", "warning");
@@ -46,6 +70,7 @@ const EventDetails = () => {
     }
 
     try {
+      setIsJoining(true);
       const res = await axios.patch(
         `${import.meta.env.VITE_BACKEND_URL}/join-event`,
         {
@@ -55,19 +80,30 @@ const EventDetails = () => {
       );
 
       if (res.data?.joined) {
-        setJoined(true);
         swal.fire(
           "Joined",
           "You have successfully joined the event.",
           "success"
         );
       } else {
-        setJoined(false);
         swal.fire("Unjoined", "You have left the event.", "info");
       }
+
+      // Update the cache instantly
+      queryClient.setQueryData(["event-details", id], (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          joinedUsers: res.data?.joined
+            ? [...old.joinedUsers, user.email]
+            : old.joinedUsers.filter((email) => email !== user.email),
+        };
+      });
     } catch (error) {
       console.error(error);
       swal.fire("Error", "Something went wrong!", "error");
+    } finally {
+      setIsJoining(false);
     }
   };
 
@@ -120,18 +156,23 @@ const EventDetails = () => {
                   <h3 className="text-lg font-medium mb-1">Organized by:</h3>
                   <p>{author.name}</p>
                   Event created on:{" "}
-                  <span>{new Date(createdAt).toLocaleDateString()}</span>
+                  <span> {format(new Date(createdAt), "MMMM dd, yyyy")}</span>
                 </div>
                 <div>
                   <button
                     onClick={handleJoinEvent}
+                    disabled={isJoining}
                     className={`${
                       joined
                         ? "bg-red-600 hover:bg-red-700"
                         : "bg-teal-600 hover:bg-teal-700"
-                    } text-white px-8 py-3 rounded-md text-lg font-medium transition-colors cursor-pointer`}
+                    } text-white px-8 py-3 rounded-md text-lg font-medium transition-colors cursor-pointer disabled:opacity-50`}
                   >
-                    {joined ? "Unjoin Event" : "Join Event"}
+                    {isJoining
+                      ? "Processing..."
+                      : joined
+                      ? "Unjoin Event"
+                      : "Join Event"}
                   </button>
                 </div>
               </div>

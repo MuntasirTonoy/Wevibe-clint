@@ -24,11 +24,14 @@ const Hero = () => {
             <div className="flex gap-2 lg:flex-row flex-col justify-center lg:justify-start">
               <Link
                 to="/upcoming-events"
-                className="btn bg-teal-600  text-white"
+                className="btn bg-teal-600  text-white hover:bg-teal-700 font-semibold py-2 rounded-md transition cursor-pointer"
               >
                 Find Event
               </Link>
-              <Link to="/create-event" className="btn  bg-teal-600 text-white ">
+              <Link
+                to="/create-event"
+                className="btn bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 rounded-md transition cursor-pointer "
+              >
                 Create Event
               </Link>
             </div>
