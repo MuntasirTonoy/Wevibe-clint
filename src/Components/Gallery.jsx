@@ -41,10 +41,8 @@ const Gallery = () => {
     <section className="py-16 md:py-32 bg-base-200">
       <div className="max-w-full mx-auto ">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-base">
-            Impact Gallery
-          </h2>
-          <p className="text-lg text-base max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold ">Impact Gallery</h2>
+          <p className="text-lg  max-w-3xl mx-auto">
             See the difference our volunteers are making in communities around
             the country.
           </p>

@@ -3,7 +3,9 @@ import React from "react";
 const Accordian = () => {
   return (
     <div className="max-w-4xl mx-auto my-20 p-5 bg-base rounded-lg ">
-      <h2 className="text-2xl font-bold mb-5 text-center">Event FAQs</h2>
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-5">
+        Event FAQs
+      </h2>
       <div className="join join-vertical bg-base-100">
         <div className="collapse collapse-arrow join-item border-base-300 border">
           <input type="radio" name="event-accordion" defaultChecked />
