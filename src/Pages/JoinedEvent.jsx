@@ -1,42 +1,49 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { PiTagChevron, PiCalendar, PiMapPin } from "react-icons/pi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { TbListDetails } from "react-icons/tb";
-import { Link } from "react-router"; // fixed import
-import axios from "axios";
+import { Link } from "react-router";
 import { AuthContext } from "../context/AuthContext";
 import Lottie from "lottie-react";
 import animationData from "../assets/not-found.json";
 import Loading from "../Components/Loading";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { format } from "date-fns";
+
+const fetchJoinedEvents = async (email) => {
+  const res = await axios.get(
+    `${import.meta.env.VITE_BACKEND_URL}/joined-events?email=${email}`
+  );
+  return res.data;
+};
 
 const JoinedEvents = () => {
   const { user } = useContext(AuthContext);
-  const [userEvents, setUserEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const userEmail = user?.email;
 
-  useEffect(() => {
-    const fetchJoinedEvents = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/joined-events?email=${userEmail}`
-        );
-        setUserEvents(response.data);
-      } catch (error) {
-        console.error("Failed to fetch joined events:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const {
+    data: userEvents = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["joined-events", userEmail],
+    queryFn: () => fetchJoinedEvents(userEmail),
+    enabled: !!userEmail, // only fetch if email exists
+  });
 
-    if (userEmail) {
-      fetchJoinedEvents();
-    }
-  }, [userEmail]);
+  if (isLoading) return <Loading />;
 
-  if (loading) {
-    return <Loading />;
+  if (isError) {
+    return (
+      <div className="text-center py-12">
+        <h3 className="text-lg font-medium mb-2 text-red-600">
+          Failed to load events
+        </h3>
+        <p>{error.message}</p>
+      </div>
+    );
   }
 
   return (
@@ -46,7 +53,7 @@ const JoinedEvents = () => {
         <div className="flex justify-between flex-wrap items-center mb-8 gap-4">
           <h1 className="text-3xl font-bold">Your Joined Events</h1>
           {userEvents.length > 0 && (
-            <button className="bg-red-600 btn hover:bg-red-700 text-white flex items-center gap-2 px-4 py-2 rounded-md">
+            <button className="bg-red-600 btn hover:bg-red-700 text-white justify-center  flex items-center gap-2 px-4 py-2 rounded-md">
               <FaRegTrashAlt />
               Delete All
             </button>
@@ -54,7 +61,7 @@ const JoinedEvents = () => {
         </div>
 
         {/* Event List */}
-        {!loading && userEvents.length > 0 && (
+        {userEvents.length > 0 && (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
             {userEvents.map((event) => (
               <div
@@ -87,7 +94,7 @@ const JoinedEvents = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6 text-sm gap-2">
                       <div className="flex items-center">
                         <PiCalendar className="h-4 w-4 mr-2" />
-                        {event.eventDate}
+                        {format(new Date(event.eventDate), "MMMM dd, yyyy")}
                       </div>
                       <div className="flex items-center">
                         <PiMapPin className="h-4 w-4 mr-2" />
@@ -96,7 +103,7 @@ const JoinedEvents = () => {
                     </div>
                   </div>
 
-                  {/* Actions (side by side for md+, stacked for mobile) */}
+                  {/* Actions */}
                   <div className="mt-4 md:mt-0 md:self-end">
                     <Link to={`/event/${event._id}`}>
                       <button className="border border-gray-300 hover:bg-base-200 px-4 py-2 rounded-md flex items-center justify-center gap-2 transition-colors w-full md:w-auto">
@@ -111,7 +118,7 @@ const JoinedEvents = () => {
         )}
 
         {/* Empty State */}
-        {!loading && userEvents.length === 0 && (
+        {userEvents.length === 0 && (
           <div className="text-center py-12 bg-base-100 rounded-lg">
             <h3 className="text-lg font-medium mb-2">
               You haven't joined any events yet
