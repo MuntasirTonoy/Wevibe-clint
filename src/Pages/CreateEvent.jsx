@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   FaCalendarAlt,
@@ -18,12 +19,18 @@ import {
 const CreateEvent = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const queryClient = useQueryClient();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [eventType, setEventType] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [location, setLocation] = useState("");
-  const [eventDate, setEventDate] = useState(new Date());
+  const [eventDate, setEventDate] = useState(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow;
+  });
   const [loading, setLoading] = useState(false);
 
   const eventTypes = [
@@ -59,6 +66,7 @@ const CreateEvent = () => {
         `${import.meta.env.VITE_BACKEND_URL}/events`,
         newEvent
       );
+
       if (response.data.insertedId) {
         swal.fire({
           icon: "success",
@@ -66,6 +74,10 @@ const CreateEvent = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+
+        // Invalidate userEvents query so ManageEvents refetches
+        queryClient.invalidateQueries(["userEvents", user?.email]);
+
         navigate("/manage-events");
       }
     } catch (error) {
@@ -80,28 +92,24 @@ const CreateEvent = () => {
     }
   };
 
-  // Set minimum date to tomorrow
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
   return (
     <div className="bg-base-200 min-h-screen w-full">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-base-100 rounded-lg shadow-md overflow-hidden">
           <div className="p-6">
-            <h1 className="text-2xl font-semibold  mb-6">Create New Event</h1>
+            <h1 className="text-2xl font-semibold mb-6">Create New Event</h1>
             <form onSubmit={handleSubmit}>
               <div className="space-y-6">
                 <div>
                   <label
                     htmlFor="title"
-                    className="block text-sm font-medium  mb-1"
+                    className="block text-sm font-medium mb-1"
                   >
                     Event Title *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FaHeading className="h-5 w-5 " />
+                      <FaHeading className="h-5 w-5" />
                     </div>
                     <input
                       type="text"
@@ -117,13 +125,13 @@ const CreateEvent = () => {
                 <div>
                   <label
                     htmlFor="description"
-                    className="block text-sm font-medium  mb-1"
+                    className="block text-sm font-medium mb-1"
                   >
                     Description *
                   </label>
                   <div className="relative">
                     <div className="absolute top-3 left-3 pointer-events-none">
-                      <FaFileAlt className="h-5 w-5 " />
+                      <FaFileAlt className="h-5 w-5" />
                     </div>
                     <textarea
                       id="description"
@@ -145,7 +153,7 @@ const CreateEvent = () => {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FaTags className="h-5 w-5 " />
+                      <FaTags className="h-5 w-5" />
                     </div>
                     <select
                       id="event-type"
@@ -168,13 +176,13 @@ const CreateEvent = () => {
                 <div>
                   <label
                     htmlFor="image-url"
-                    className="block text-sm font-medium  mb-1"
+                    className="block text-sm font-medium mb-1"
                   >
                     Thumbnail Image URL *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FaImage className="h-5 w-5 " />
+                      <FaImage className="h-5 w-5" />
                     </div>
                     <input
                       type="url"
@@ -189,28 +197,6 @@ const CreateEvent = () => {
                 </div>
                 <div>
                   <label
-                    htmlFor="location"
-                    className="block text-sm font-medium mb-1"
-                  >
-                    Location *
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FaMapMarkerAlt className="h-5 w-5 " />
-                    </div>
-                    <input
-                      type="text"
-                      id="location"
-                      required
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-base-100 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      placeholder="Enter event location"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label
                     htmlFor="event-date"
                     className="block text-sm font-medium mb-1"
                   >
@@ -218,14 +204,16 @@ const CreateEvent = () => {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                      <FaCalendarAlt className="h-5 w-5 " />
+                      <FaCalendarAlt className="h-5 w-5" />
                     </div>
                     <div className="w-full">
                       <DatePicker
                         id="event-date"
                         selected={eventDate}
                         onChange={(date) => setEventDate(date)}
-                        minDate={tomorrow}
+                        minDate={
+                          new Date(new Date().setDate(new Date().getDate() + 1))
+                        }
                         placeholderText="Select event date"
                         required
                         className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-base-100 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

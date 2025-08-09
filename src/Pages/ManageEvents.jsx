@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import {
   PiPlus,
   PiTagChevron,
@@ -7,44 +7,38 @@ import {
   PiPencil,
   PiTrash,
 } from "react-icons/pi";
-import { FiPlus } from "react-icons/fi";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import axios from "axios";
 import Loading from "../Components/Loading";
 import swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
 import Lottie from "lottie-react";
 import animationData from "../assets/not-found.json";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+const fetchUserEvents = async (email) => {
+  if (!email) return [];
+  const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/events`, {
+    params: { author: email },
+  });
+  return res.data;
+};
 
 const ManageEvents = () => {
   const { user } = useContext(AuthContext);
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const fetchUserEvents = async () => {
-      if (!user?.email) return;
-
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/events`,
-          {
-            params: { author: user.email },
-          }
-        );
-        setEvents(res.data);
-      } catch (err) {
-        console.error("Error fetching user's events:", err);
-        setError("Failed to load events. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserEvents();
-  }, [user?.email]);
+  const {
+    data: events = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["userEvents", user?.email],
+    queryFn: () => fetchUserEvents(user?.email),
+    enabled: !!user?.email,
+    staleTime: 5 * 60 * 1000,
+  });
 
   const handleDelete = async (id) => {
     const confirm = await swal.fire({
@@ -60,8 +54,9 @@ const ManageEvents = () => {
     if (confirm.isConfirmed) {
       try {
         await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/events/${id}`);
-        setEvents((prev) => prev.filter((event) => event._id !== id));
         swal.fire("Deleted!", "Your event has been deleted.", "success");
+        // Refetch to update the event list
+        queryClient.invalidateQueries(["userEvents", user?.email]);
       } catch (err) {
         console.error("Delete error:", err);
         swal.fire("Error!", "Failed to delete the event.", "error");
@@ -69,7 +64,7 @@ const ManageEvents = () => {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <Loading />
@@ -77,7 +72,7 @@ const ManageEvents = () => {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="alert alert-error shadow-lg max-w-md">
@@ -95,7 +90,7 @@ const ManageEvents = () => {
                 d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span>Error: {error}</span>
+            <span>Error: {error?.message || "Failed to load events."}</span>
           </div>
         </div>
       </div>
@@ -115,6 +110,7 @@ const ManageEvents = () => {
             </button>
           </Link>
         </div>
+
         {events.length > 0 ? (
           <div className="space-y-6">
             {events.map((event) => (
@@ -122,7 +118,6 @@ const ManageEvents = () => {
                 key={event._id}
                 className="bg-base-100 rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row"
               >
-                {/* Fixed width image container */}
                 <div className="md:w-64 lg:w-80 h-48 md:h-auto flex-shrink-0">
                   <img
                     src={event.imageUrl}
@@ -131,8 +126,8 @@ const ManageEvents = () => {
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
-                  <div className=" inline-flex  ">
-                    <span className="bg-indigo-100 text-teal-800 flex px-2 py-1 rounded-full text-xs font-semibold items-center mb-3 ">
+                  <div className="inline-flex">
+                    <span className="bg-indigo-100 text-teal-800 flex px-2 py-1 rounded-full text-xs font-semibold items-center mb-3">
                       <PiTagChevron className="h-3 w-3 mr-1" />
                       {event.eventType}
                     </span>
@@ -179,7 +174,7 @@ const ManageEvents = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 bg-base-200 rounded-lg ">
+          <div className="text-center py-12 bg-base-200 rounded-lg">
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               You haven't created any events yet
             </h3>
