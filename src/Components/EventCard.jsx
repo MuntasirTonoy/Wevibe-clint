@@ -24,7 +24,7 @@ const EventCard = ({ event }) => {
         </span>
 
         {/* Title */}
-        <h2 className="text-xl font-semibold  mb-2">{title}</h2>
+        <h2 className="text-xl font-semibold line-clamp-1  mb-2">{title}</h2>
 
         {/* Date and Location */}
         <div className="flex items-center  text-sm mb-2">

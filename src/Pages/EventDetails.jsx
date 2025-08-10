@@ -7,6 +7,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { AuthContext } from "../context/AuthContext";
 import Loading from "../Components/Loading";
+import Comments from "../Components/Comments";
 
 import {
   PiCalendar,
@@ -15,6 +16,7 @@ import {
   PiArrowLeft,
 } from "react-icons/pi";
 
+// Fetch event details
 const fetchEventDetails = async (id) => {
   const res = await axios.get(
     `${import.meta.env.VITE_BACKEND_URL}/events/${id}`
@@ -89,7 +91,7 @@ const EventDetails = () => {
         swal.fire("Unjoined", "You have left the event.", "info");
       }
 
-      // Update the cache instantly
+      // Update cache instantly
       queryClient.setQueryData(["event-details", id], (old) => {
         if (!old) return old;
         return {
@@ -118,65 +120,73 @@ const EventDetails = () => {
           Back to Events
         </Link>
 
-        <div className="bg-base-100 rounded-lg shadow-md overflow-hidden">
-          <div className="h-64 md:h-96 w-full relative">
-            <img
-              src={imageUrl}
-              alt={title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute top-4 right-4 bg-base-100 rounded-full px-4 py-2 text-sm font-medium text-teal-700 flex items-center shadow-md">
-              <PiTagChevron className="h-4 w-4 mr-1" />
-              {eventType}
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Event Details */}
+          <div className="lg:col-span-2 bg-base-100 rounded-lg shadow-md overflow-hidden">
+            <div className="h-64 md:h-96 w-full relative">
+              <img
+                src={imageUrl}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-4 right-4 bg-base-100 rounded-full px-4 py-2 text-sm font-medium text-teal-700 flex items-center shadow-md">
+                <PiTagChevron className="h-4 w-4 mr-1" />
+                {eventType}
+              </div>
+            </div>
+
+            <div className="p-6">
+              <h1 className="text-3xl font-bold mb-4">{title}</h1>
+
+              <div className="flex flex-col sm:flex-row sm:items-center mb-6">
+                <div className="flex items-center mr-6 mb-2 sm:mb-0">
+                  <PiCalendar className="h-5 w-5 mr-2" />
+                  {format(new Date(eventDate), "PP")}
+                </div>
+                <div className="flex items-center">
+                  <PiMapPin className="h-5 w-5 mr-2" />
+                  {location}
+                </div>
+              </div>
+
+              <div className="mb-8">
+                <h3 className="text-lg font-medium mb-3">Description</h3>
+                <p className="leading-relaxed">{description}</p>
+              </div>
+
+              <div className="border-t border-gray-200 pt-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <div className="mb-4 sm:mb-0">
+                    <h3 className="text-lg font-medium mb-1">Organized by:</h3>
+                    <p>{author.name}</p>
+                    Event created on:{" "}
+                    <span>{format(new Date(createdAt), "MMMM dd, yyyy")}</span>
+                  </div>
+                  <div>
+                    <button
+                      onClick={handleJoinEvent}
+                      disabled={isJoining}
+                      className={`${
+                        joined
+                          ? "bg-red-600 hover:bg-red-700"
+                          : "bg-teal-600 hover:bg-teal-700"
+                      } text-white px-8 py-3 rounded-md text-lg font-medium transition-colors cursor-pointer disabled:opacity-50`}
+                    >
+                      {isJoining
+                        ? "Processing..."
+                        : joined
+                        ? "Unjoin Event"
+                        : "Join Event"}
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="p-6">
-            <h1 className="text-3xl font-bold mb-4">{title}</h1>
-
-            <div className="flex flex-col sm:flex-row sm:items-center mb-6">
-              <div className="flex items-center mr-6 mb-2 sm:mb-0">
-                <PiCalendar className="h-5 w-5 mr-2" />
-                {format(new Date(eventDate), "PP")}
-              </div>
-              <div className="flex items-center">
-                <PiMapPin className="h-5 w-5 mr-2" />
-                {location}
-              </div>
-            </div>
-
-            <div className="mb-8">
-              <h3 className="text-lg font-medium mb-3">Description</h3>
-              <p className="leading-relaxed">{description}</p>
-            </div>
-
-            <div className="border-t border-gray-200 pt-6">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <div className="mb-4 sm:mb-0">
-                  <h3 className="text-lg font-medium mb-1">Organized by:</h3>
-                  <p>{author.name}</p>
-                  Event created on:{" "}
-                  <span> {format(new Date(createdAt), "MMMM dd, yyyy")}</span>
-                </div>
-                <div>
-                  <button
-                    onClick={handleJoinEvent}
-                    disabled={isJoining}
-                    className={`${
-                      joined
-                        ? "bg-red-600 hover:bg-red-700"
-                        : "bg-teal-600 hover:bg-teal-700"
-                    } text-white px-8 py-3 rounded-md text-lg font-medium transition-colors cursor-pointer disabled:opacity-50`}
-                  >
-                    {isJoining
-                      ? "Processing..."
-                      : joined
-                      ? "Unjoin Event"
-                      : "Join Event"}
-                  </button>
-                </div>
-              </div>
-            </div>
+          {/* Comments Sidebar */}
+          <div className="lg:col-span-1">
+            <Comments eventId={_id} />
           </div>
         </div>
       </div>
